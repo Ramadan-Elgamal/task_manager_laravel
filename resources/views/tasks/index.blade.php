@@ -40,13 +40,19 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">{{ $task['status'] }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $task['due_date'] }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                    <a href="{{ route('tasks.show', $task['id']) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
-                    <a href="{{ route('tasks.edit', $task['id']) }}" class="text-gray-600 hover:text-gray-900">Edit</a>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 flex items-center">
+                    <a href="{{ route('tasks.show', $task['id']) }}">
+                        <x-button type="primary">View</x-button>
+                    </a>
+
+                    <a href="{{ route('tasks.edit', $task['id']) }}">
+                        <x-button type="secondary">Edit</x-button>
+                    </a>
+
                     <form action="{{ route('tasks.destroy', $task['id']) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                        <x-button type="danger" type="submit">Delete</x-button>
                     </form>
                 </td>
             </tr>
