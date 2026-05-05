@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Task Details')
+
 @section('content')
 <div class="mb-6">
     <a href="{{ route('tasks.index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm flex items-center">
