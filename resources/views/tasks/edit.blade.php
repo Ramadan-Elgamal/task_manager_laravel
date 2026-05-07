@@ -15,29 +15,29 @@
 
     <div class="bg-[var(--task-surface)] shadow-sm border border-[var(--task-border)] rounded-xl overflow-hidden">
         <div class="px-8 py-6 border-b border-[var(--task-border)]">
-            <h2 class="text-2xl font-bold text-[var(--task-text)]">Edit Task: {{ $task['title'] }}</h2>
+            <h2 class="text-2xl font-bold text-[var(--task-text)]">Edit Task: {{ $task->title }}</h2>
         </div>
 
-        <form action="{{ route('tasks.update', $task['id']) }}" method="POST" class="p-8 space-y-6">
+        <form action="{{ route('tasks.update', $task->id) }}" method="POST" class="p-8 space-y-6">
             @csrf
             @method('PUT')
 
             <div>
                 <label for="title" class="block text-sm font-medium text-[var(--task-text)]/90">Task Title</label>
-                <input type="text" name="title" id="title" value="{{ $task['title'] }}" required
+                <input type="text" name="title" id="title" value="{{ $task->title }}" required
                     class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
             </div>
 
             <div>
                 <label for="description" class="block text-sm font-medium text-[var(--task-text)]/90">Description</label>
                 <textarea name="description" id="description" rows="4" required
-                    class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">{{ $task['description'] }}</textarea>
+                    class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">{{ $task->description }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="due_date" class="block text-sm font-medium text-[var(--task-text)]/90">Due Date</label>
-                    <input type="date" name="due_date" id="due_date" value="{{ $task['due_date'] }}" required
+                    <input type="date" name="due_date" id="due_date" value="{{ $task->due_date }}" required
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
                 </div>
 
@@ -45,27 +45,33 @@
                     <label for="priority" class="block text-sm font-medium text-[var(--task-text)]/90">Priority</label>
                     <select name="priority" id="priority"
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
-                        <option value="Low" {{ $task['priority'] == 'Low' ? 'selected' : '' }}>Low</option>
-                        <option value="Medium" {{ $task['priority'] == 'Medium' ? 'selected' : '' }}>Medium</option>
-                        <option value="High" {{ $task['priority'] == 'High' ? 'selected' : '' }}>High</option>
-                        <option value="Urgent" {{ $task['priority'] == 'Urgent' ? 'selected' : '' }}>Urgent</option>
+                        <option value="Low" {{ $task->priority == 'Low' ? 'selected' : '' }}>Low</option>
+                        <option value="Medium" {{ $task->priority == 'Medium' ? 'selected' : '' }}>Medium</option>
+                        <option value="High" {{ $task->priority == 'High' ? 'selected' : '' }}>High</option>
+                        <option value="Urgent" {{ $task->priority == 'Urgent' ? 'selected' : '' }}>Urgent</option>
                     </select>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="creator" class="block text-sm font-medium text-[var(--task-text)]/90">Creator</label>
-                    <input type="text" name="creator" id="creator" value="{{ $task['creator'] }}" required
+                    <label for="user_id" class="block text-sm font-medium text-[var(--task-text)]/90">Task Creator</label>
+                    <select name="user_id" id="user_id" required
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ $task->user_id == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label for="status" class="block text-sm font-medium text-[var(--task-text)]/90">Status</label>
                     <select name="status" id="status"
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
-                        <option value="To Do" {{ $task['status'] == 'To Do' ? 'selected' : '' }}>To Do</option>
-                        <option value="In Progress" {{ $task['status'] == 'In Progress' ? 'selected' : '' }}>In Progress</option>
-                        <option value="Done" {{ $task['status'] == 'Done' ? 'selected' : '' }}>Done</option>
+                        <option value="To Do" {{ $task->status == 'To Do' ? 'selected' : '' }}>To Do</option>
+                        <option value="In Progress" {{ $task->status == 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                        <option value="Done" {{ $task->status == 'Done' ? 'selected' : '' }}>Done</option>
                     </select>
                 </div>
             </div>

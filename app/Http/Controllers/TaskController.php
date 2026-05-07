@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -23,7 +25,7 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        Task::create($request->all()->except('_token'));
+        Task::create($request->except('_token'));
         return redirect()->route('tasks.index');
     }
 
@@ -43,7 +45,7 @@ class TaskController extends Controller
     public function update(Request $request, string $id)
     {
         $task = Task::findOrFail($id);
-        $task->update($request->all()->except('_token'));
+        $task->update($request->except('_token'));
         return redirect()->route('tasks.index');
     }
 

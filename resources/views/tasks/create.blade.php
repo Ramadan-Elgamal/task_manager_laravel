@@ -55,9 +55,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="creator" class="block text-sm font-medium text-[var(--task-text)]/90">Creator</label>
-                    <input type="text" name="creator" id="creator" placeholder="Enter your name" required
-                        class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm placeholder:text-[var(--task-muted)]">
+                    <label for="user_id" class="block text-sm font-medium text-[var(--task-text)]/90">Task Creator</label>
+                    <select name="user_id" id="user_id" required
+                        class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
+                        <option value="">Select a User</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label for="status" class="block text-sm font-medium text-[var(--task-text)]/90">Status</label>
