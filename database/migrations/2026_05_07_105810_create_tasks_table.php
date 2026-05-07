@@ -10,20 +10,21 @@ return new class extends Migration
      * Run the migrations.
      */
    public function up(): void
-    {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description');
-            $table->date('due_date');
-            $table->string('priority')->default('Medium'); 
-            $table->string('status')->default('To Do');
-            
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            
-            $table->timestamps(); 
-        });
-    }
+{
+    Schema::create('tasks', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->text('description');
+        $table->date('due_date');
+        $table->string('priority')->default('Medium'); 
+        $table->string('status')->default('To Do');
+        
+        // Ensure this exact line exists:
+        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+        
+        $table->timestamps(); 
+    });
+}
 
     /**
      * Reverse the migrations.
