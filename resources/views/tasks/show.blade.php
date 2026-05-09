@@ -25,7 +25,10 @@
                         Due: <span class="font-medium ml-1">{{ $task->due_date }}</span>
                     </span>
                     <span class="flex items-center border-l border-[var(--task-border)] pl-4">
-                        Creator: <span class="font-medium text-[var(--task-text)] ml-1">{{ $task->user->name }}</span>
+                        Creator: <span class="font-medium text-[var(--task-text)] ml-1">{{ $task->creator->name }}</span>
+                    </span>
+                    <span class="flex items-center border-l border-[var(--task-border)] pl-4">
+                        Assignee: <span class="font-medium text-[var(--task-text)] ml-1">{{ optional($task->assignee)->name ?? 'Unassigned' }}</span>
                     </span>
                     <span class="px-2 py-1 rounded text-xs font-bold tracking-wide {{ strtolower($task->priority) === 'urgent' ? 'bg-[var(--task-danger)]/20 text-[var(--task-danger)]' : 'bg-[var(--task-up)]/20 text-[var(--task-up)]' }}">
                         {{ strtoupper($task->priority) }}
@@ -51,6 +54,43 @@
                 Description
             </h3>
             <p class="text-[var(--task-text)]/80 leading-relaxed whitespace-pre-line">{{ $task->description }}</p>
+        </div>
+        <div class="p-8">
+            <h3 class="text-lg font-semibold text-[var(--task-text)] border-b border-[var(--task-border)] pb-2 mb-4">Comments</h3>
+            <div class="space-y-4">
+                @foreach($task->comments as $comment)
+                    <div class="bg-[var(--task-canvas)] p-4 rounded-md border border-[var(--task-border)]">
+                        <div class="text-sm text-[var(--task-text)] font-medium">{{ $comment->user->name }} <span class="text-xs text-[var(--task-muted)]">&middot; {{ $comment->created_at->diffForHumans() }}</span></div>
+                        <p class="text-[var(--task-text)]/80 mt-2">{{ $comment->body }}</p>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="mt-6">
+                <h4 class="text-sm font-semibold text-[var(--task-text)] mb-2">Add a comment</h4>
+                <form action="{{ route('comments.store') }}" method="POST" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label for="body" class="block text-sm text-[var(--task-text)]/90">Comment</label>
+                        <textarea name="body" id="body" rows="3" required class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md py-2 px-3">{{ old('body') }}</textarea>
+                        @error('body')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="user_id" class="block text-sm text-[var(--task-text)]/90">Commenter</label>
+                            <select name="user_id" id="user_id" required class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md py-2 px-3">
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" name="task_id" value="{{ $task->id }}">
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-[var(--task-canvas)] bg-[var(--task-accent)]">Post Comment</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -24,14 +24,20 @@
 
             <div>
                 <label for="title" class="block text-sm font-medium text-[var(--task-text)]/90">Task Title</label>
-                <input type="text" name="title" id="title" placeholder="e.g., Buy groceries" required
+                <input type="text" name="title" id="title" value="{{ old('title') }}" placeholder="e.g., Buy groceries" required
                     class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm placeholder:text-[var(--task-muted)]">
+                @error('title')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label for="description" class="block text-sm font-medium text-[var(--task-text)]/90">Description</label>
                 <textarea name="description" id="description" rows="4" placeholder="What needs to be done? Add context, goals, or notes." required
-                    class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm placeholder:text-[var(--task-muted)]"></textarea>
+                    class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm placeholder:text-[var(--task-muted)]">{{ old('description') }}</textarea>
+                @error('description')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -45,33 +51,58 @@
                     <label for="priority" class="block text-sm font-medium text-[var(--task-text)]/90">Priority</label>
                     <select name="priority" id="priority"
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                        <option value="Urgent">Urgent</option>
+                        <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Low</option>
+                        <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Medium</option>
+                        <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
+                        <option value="urgent" {{ old('priority') == 'urgent' ? 'selected' : '' }}>Urgent</option>
                     </select>
+                    @error('priority')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="user_id" class="block text-sm font-medium text-[var(--task-text)]/90">Task Creator</label>
-                    <select name="user_id" id="user_id" required
+                    <label for="creator_id" class="block text-sm font-medium text-[var(--task-text)]/90">Task Creator</label>
+                    <select name="creator_id" id="creator_id" required
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
                         <option value="">Select a User</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" {{ old('creator_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                         @endforeach
                     </select>
+                    @error('creator_id')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div>
                     <label for="status" class="block text-sm font-medium text-[var(--task-text)]/90">Status</label>
                     <select name="status" id="status"
                         class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
-                        <option value="To Do">To Do</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Done">Done</option>
+                        <option value="to_do" {{ old('status') == 'to_do' ? 'selected' : '' }}>To Do</option>
+                        <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                        <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>Done</option>
                     </select>
+                    @error('status')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="assignee_id" class="block text-sm font-medium text-[var(--task-text)]/90">Assignee</label>
+                    <select name="assignee_id" id="assignee_id" required
+                        class="mt-1 block w-full bg-[var(--task-canvas)] border border-[var(--task-border)] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[var(--task-accent)] focus:border-[var(--task-accent)] sm:text-sm">
+                        <option value="">Select a User</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ old('assignee_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('assignee_id')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 

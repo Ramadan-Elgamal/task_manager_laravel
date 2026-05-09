@@ -35,13 +35,13 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-[var(--task-text)]">{{ $task->title }}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)]/80">{{ $task->user->name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)]/80">{{ $task->creator->name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ strtolower($task->priority) === 'urgent' ? 'bg-[var(--task-danger)]/20 text-[var(--task-danger)]' : 'bg-[var(--task-up)]/20 text-[var(--task-up)]' }}">
                         {{ strtoupper($task->priority) }}
                     </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)] font-medium">{{ $task->status }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)] font-medium">{{ strtoupper($task->status) }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)]/80">{{ $task->due_date }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)]/80">{{ $task->created_at->format('d M, Y') }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 flex items-center">

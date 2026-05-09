@@ -15,11 +15,22 @@ class Task extends Model
         'due_date',
         'priority',
         'status',
-        'user_id'
+        'creator_id',
+        'assignee_id',
     ];
 
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'creator_id', 'id');
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assignee_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }
