@@ -3,6 +3,7 @@
 @section('title', 'Task Details')
 
 @section('content')
+<div class="px-6 py-8 lg:px-8">
 <div class="mb-6">
     <a href="{{ route('tasks.index') }}" class="text-[var(--task-accent)] hover:text-[var(--task-accent-active)] font-medium text-sm flex items-center">
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,5 +94,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection

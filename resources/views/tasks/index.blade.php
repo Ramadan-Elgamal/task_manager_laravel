@@ -3,6 +3,7 @@
 @section('title', 'Task List')
 
 @section('content')
+<div class="px-6 py-8 lg:px-8">
 <div class="flex justify-between items-center mb-6 gap-4 flex-wrap">
     <div>
         <p class="text-xs uppercase tracking-[0.2em] text-[var(--task-muted)]">Overview</p>
@@ -20,6 +21,7 @@
             <tr>
                 <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-[var(--task-muted)] uppercase tracking-wider">id</th> -->
                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-[var(--task-muted)] uppercase tracking-wider">Title</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-[var(--task-muted)] uppercase tracking-wider">Slug</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-[var(--task-muted)] uppercase tracking-wider">Creator</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-[var(--task-muted)] uppercase tracking-wider">Priority</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-[var(--task-muted)] uppercase tracking-wider">Status</th>
@@ -35,6 +37,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-[var(--task-text)]">{{ $task->title }}</div>
                 </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)]/80">{{ $task->slug }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--task-text)]/80">{{ $task->creator->name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ strtolower($task->priority) === 'urgent' ? 'bg-[var(--task-danger)]/20 text-[var(--task-danger)]' : 'bg-[var(--task-up)]/20 text-[var(--task-up)]' }}">
@@ -74,4 +77,5 @@
         return confirm("Are you sure you want to delete this task? Choose 'OK' for Yes or 'Cancel' for No.");
     }
 </script>
+</div>
 @endsection

@@ -1,3 +1,17 @@
+/* Theme CSS variables used across task views */
+:root {
+	--task-canvas: #ffffff;
+	--task-surface: #ffffff;
+	--task-surface-strong: #f6f7f8;
+	--task-border: #e3e3e0;
+	--task-text: #1B1B18;
+	--task-muted: #6b7280;
+	--task-accent: #2563eb;
+	--task-accent-active: #1e40af;
+	--task-danger: #d63d52;
+	--task-up: #10b981;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
