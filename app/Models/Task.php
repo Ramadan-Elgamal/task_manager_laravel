@@ -35,6 +35,11 @@ class Task extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function images()
+    {
+        return $this->hasMany(TaskImage::class);
+    }
+    
     public function sluggable(): array
     {
         return [
