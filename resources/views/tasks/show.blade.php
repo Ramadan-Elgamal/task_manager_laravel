@@ -56,6 +56,21 @@
             </h3>
             <p class="text-[var(--task-text)]/80 leading-relaxed whitespace-pre-line">{{ $task->description }}</p>
         </div>
+
+        <div class="mt-6">
+            <h4 class="text-lg font-bold text-[var(--task-text)]">Task Gallery</h4>
+
+            <div class="grid grid-cols-3 gap-4 mt-2">
+                @forelse($task->images as $image)
+                    <div class="border rounded p-1 border-[var(--task-border)] bg-[var(--task-canvas)]">
+                        <img src="{{ $image->image_url }}" alt="Task Image" class="w-full h-auto rounded">
+                    </div>
+                @empty
+                    <p class="text-[var(--task-muted)] text-sm">No images attached to this task.</p>
+                @endforelse
+            </div>
+        </div>
+
         <div class="p-8">
             <h3 class="text-lg font-semibold text-[var(--task-text)] border-b border-[var(--task-border)] pb-2 mb-4">Comments</h3>
             <div class="space-y-4">

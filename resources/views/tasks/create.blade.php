@@ -19,7 +19,7 @@
             <p class="text-sm text-[var(--task-muted)] mt-1">Define your next step and stay productive.</p>
         </div>
 
-        <form action="{{ route('tasks.store') }}" method="POST" class="p-8 space-y-6">
+        <form action="{{ route('tasks.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
             @csrf
 
             <div>
@@ -104,6 +104,15 @@
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="images" class="block text-sm font-medium text-[var(--task-text)]/90">Task Images (JPG, PNG only)</label>
+                <input type="file" name="images[]" id="images" multiple accept=".jpg,.png,.jpeg" class="mt-1 block w-full text-sm text-[var(--task-text)]">
+
+                @error('images.*')
+                    <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="pt-4 flex justify-end space-x-3 border-t border-[var(--task-border)] mt-8 pt-6">

@@ -18,7 +18,7 @@
             <h2 class="text-2xl font-bold text-[var(--task-text)]">Edit Task: {{ $task->title }}</h2>
         </div>
 
-        <form action="{{ route('tasks.update', $task->id) }}" method="POST" class="p-8 space-y-6">
+        <form action="{{ route('tasks.update', $task->id) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
             @csrf
             @method('PUT')
 
@@ -106,6 +106,15 @@
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="images" class="block text-sm font-medium text-[var(--task-text)]/90">Task Images (JPG, PNG only)</label>
+                <input type="file" name="images[]" id="images" multiple accept=".jpg,.png,.jpeg" class="mt-1 block w-full text-sm text-[var(--task-text)]">
+
+                @error('images.*')
+                    <span class="text-sm text-red-600">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="pt-4 flex justify-end space-x-3 border-t border-[var(--task-border)] mt-8 pt-6">
