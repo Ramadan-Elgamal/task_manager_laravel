@@ -36,6 +36,9 @@ class UpdateTaskRequest extends FormRequest
             'status' => 'required|in:to_do,in_progress,done',
             'creator_id' => 'required|exists:users,id',
             'assignee_id' => 'required|exists:users,id',
+
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,png,jpeg|max:2048'
         ];
     }
 
@@ -57,6 +60,10 @@ class UpdateTaskRequest extends FormRequest
             'creator_id.exists' => 'The selected creator does not exist.',
             'assignee_id.required' => 'The assignee field is required.',
             'assignee_id.exists' => 'The selected assignee does not exist.',
+            'images.array' => 'The images field must be an array.',
+            'images.*.image' => 'Each image must be a valid image file.',
+            'images.*.mimes' => 'Each image must be a file of type: jpg, png, jpeg.',
+            'images.*.max' => 'Each image may not be greater than 2048 kilobytes.',
         ];
     }
 }

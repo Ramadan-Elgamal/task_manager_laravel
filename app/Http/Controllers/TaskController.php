@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -55,19 +56,41 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task', 'users'))->with('success', 'Task updated successfully!');
     }
 
-    public function update(UpdateTaskRequest $request, string $id)
+    /**
+     * Update the specified task in the database.
+     * Requirement: Upload the new image, Delete the old image from storage to avoid unused files.
+     */
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        $task = Task::findOrFail($id);
-        $validated = $request->validated();
-        $task->update($validated);
+        $taskData = $request->safe()->except(['images']);
+        
+        $task->update($taskData);
+
+        if ($request->hasFile('images')) {
+            
+            foreach ($task->images as $oldImage) {
+                Storage::disk('public')->delete($oldImage->path);
+            }
+            
+            $task->images()->delete();
+
+            foreach ($request->file('images') as $newImage) {
+                $path = $newImage->store('tasks', 'public');
+                $task->images()->create(['path' => $path]);
+            }
+        }
 
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
 
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        $task = Task::findOrFail($id);
+        foreach ($task->images as $image) {
+            Storage::disk('public')->delete($image->path);
+        }
+
         $task->delete();
+
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
     }
 }
