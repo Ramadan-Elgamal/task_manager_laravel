@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div class="bg-[var(--task-surface)] shadow-sm rounded-xl border border-[var(--task-border)] overflow-hidden">
+<div class="bg-[var(--task-surface)] shadow-sm rounded-xl border border-[var(--task-border)] overflow-x-auto">
     <table class="min-w-full divide-y divide-[var(--task-border)]">
         <thead class="bg-[var(--task-surface-strong)]">
             <tr>
