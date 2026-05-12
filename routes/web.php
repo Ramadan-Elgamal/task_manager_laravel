@@ -10,8 +10,6 @@ Route::get('/', function () {
 });
 
 Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
-Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-
 
 Route::middleware('auth')->group(function () {
     
@@ -29,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
