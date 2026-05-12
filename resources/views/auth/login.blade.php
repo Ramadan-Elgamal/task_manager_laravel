@@ -43,5 +43,14 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+        <div class="mt-6 pt-4 border-t border-gray-200 flex flex-col space-y-3">
+            <a href="{{ route('socialite.redirect', 'github') }}" class="w-full inline-flex justify-center items-center px-4 py-2 bg-gray-900 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-800 transition">
+                Log in with GitHub
+            </a>
+
+            <a href="{{ route('socialite.redirect', 'google') }}" class="w-full inline-flex justify-center items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 transition">
+                Log in with Google
+            </a>
+        </div>
     </form>
 </x-guest-layout>
