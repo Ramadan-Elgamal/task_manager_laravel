@@ -15,7 +15,7 @@ class TaskController extends Controller
 
     public function index()
     {
-        $tasks = Task::with(['creator', 'assignee', 'comments.user'])->paginate(10);
+        $tasks = Task::with(['creator', 'assignee', 'comments.user'])->latest()->paginate(10);
         return view('tasks.index', compact('tasks'));
 
     }
