@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest; // Reuse your existing form validation requests!
+use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
-use Illuminate\Http\Response;
 
 class TaskApiController extends Controller
 {

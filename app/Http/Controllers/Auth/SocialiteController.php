@@ -33,35 +33,59 @@ class SocialiteController extends Controller
         try {
             $socialUser = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
+            if (Auth::check()) {
+                return redirect()->route('profile.edit')->withErrors(['status' => 'Account connection failed. Please try again.']);
+            }
             return redirect()->route('login')->withErrors(['email' => 'External authentication failed. Please try again.']);
+        }
+        if (Auth::check()) {
+            $currentUser = Auth::user();
+
+            $existingAccount = User::where('provider', $provider)
+                ->where('provider_id', $socialUser->getId())
+                ->first();
+
+            if ($existingAccount && $existingAccount->id !== $currentUser->id) {
+                return redirect()->route('profile.edit')
+                    ->withErrors(['status' => 'This ' . ucfirst($provider) . ' account is already linked to another user.']);
+            }
+
+            $currentUser->update([
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'provider_token' => $socialUser->token,
+                'avatar' => $currentUser->avatar ?? $socialUser->getAvatar(),
+            ]);
+
+            return redirect()->route('profile.edit')->with('status', 'account-connected');
         }
 
         $user = User::where('provider', $provider)
-                    ->where('provider_id', $socialUser->getId())
-                    ->first();
+            ->where('provider_id', $socialUser->getId())
+            ->first();
 
         if (!$user) {
             $user = User::where('email', $socialUser->getEmail())->first();
 
             if ($user) {
                 $user->update([
-                    'provider'       => $provider,
-                    'provider_id'    => $socialUser->getId(),
+                    'provider' => $provider,
+                    'provider_id' => $socialUser->getId(),
                     'provider_token' => $socialUser->token,
-                    'avatar'         => $user->avatar ?? $socialUser->getAvatar(),
+                    'avatar' => $user->avatar ?? $socialUser->getAvatar(),
                 ]);
             }
         }
 
         if (!$user) {
             $user = User::create([
-                'name'           => $socialUser->getName() ?? $socialUser->getNickname() ?? 'OAuth User',
-                'email'          => $socialUser->getEmail(),
-                'password'       => null, // Safe to leave null thanks to our Commit 4 migration
-                'provider'       => $provider,
-                'provider_id'    => $socialUser->getId(),
+                'name' => $socialUser->getName() ?? $socialUser->getNickname() ?? 'OAuth User',
+                'email' => $socialUser->getEmail(),
+                'password' => null,
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
                 'provider_token' => $socialUser->token,
-                'avatar'         => $socialUser->getAvatar(),
+                'avatar' => $socialUser->getAvatar(),
             ]);
         }
 
